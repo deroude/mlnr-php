@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      - "MYSQL_DATABASE=mlnr"
+      - "MYSQL_USER=rltf"
+      - "MYSQL_PASSWORD=darius"
+      - "MYSQL_ROOT_PASSWORD=darius"
+    ports:
+      - 3306:3306
