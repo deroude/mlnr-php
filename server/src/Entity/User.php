@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements AdvancedUserInterface
 {
     /**
      * @ORM\Id()
@@ -46,6 +49,22 @@ class User
      * @ORM\Column(type="string", name="`rank`", length=16)
      */
     private $rank;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="author")
+     */
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MeetingRequest", mappedBy="user", orphanRemoval=true)
+     */
+    private $meetingRequests;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+        $this->meetingRequests = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -123,4 +142,105 @@ class User
 
         return $this;
     }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getRoles()
+    {
+        return array($this->role);
+    }
+
+    public function eraseCredentials()
+    {}
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function isAccountNonExpired()
+    {
+        return $this->active;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return $this->active;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return $this->active;
+    }
+
+    public function isEnabled()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            // set the owning side to null (unless already changed)
+            if ($article->getAuthor() === $this) {
+                $article->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MeetingRequest[]
+     */
+    public function getMeetingRequests(): Collection
+    {
+        return $this->meetingRequests;
+    }
+
+    public function addMeetingRequest(MeetingRequest $meetingRequest): self
+    {
+        if (!$this->meetingRequests->contains($meetingRequest)) {
+            $this->meetingRequests[] = $meetingRequest;
+            $meetingRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeetingRequest(MeetingRequest $meetingRequest): self
+    {
+        if ($this->meetingRequests->contains($meetingRequest)) {
+            $this->meetingRequests->removeElement($meetingRequest);
+            // set the owning side to null (unless already changed)
+            if ($meetingRequest->getUser() === $this) {
+                $meetingRequest->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
