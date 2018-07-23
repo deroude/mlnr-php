@@ -40,7 +40,7 @@ class AuthController extends BaseController
         
         // As you can see we are passing `JWT_SECRET` as the second parameter that will 
         // be used to decode the token in the future.
-        return JWT::encode($payload, env('JWT_SECRET'));
+        return JWT::encode($payload, env('JWT_SECRET','0v9+i34LalcbnMdsGQZQzA=='));
     } 
     /**
      * Authenticate a user and return the token if the provided credentials are correct.

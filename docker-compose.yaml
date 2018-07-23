@@ -4,8 +4,8 @@ services:
     image: mysql
     container_name: mysql
     environment:
-      - "MYSQL_DATABASE=mlnr"
-      - "MYSQL_USER=rltf"
+      - "MYSQL_DATABASE=id6581093_mlnr"
+      - "MYSQL_USER=id6581093_rltf"
       - "MYSQL_PASSWORD=darius"
       - "MYSQL_ROOT_PASSWORD=darius"
     ports:
