@@ -10,21 +10,6 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class AuthController extends BaseController 
 {
     /**
-     * The request instance.
-     *
-     * @var \Illuminate\Http\Request
-     */
-    private $request;
-    /**
-     * Create a new controller instance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    public function __construct(Request $request) {
-        $this->request = $request;
-    }
-    /**
      * Create a new token.
      * 
      * @param  \App\Domain\User   $user
@@ -48,13 +33,13 @@ class AuthController extends BaseController
      * @param  \App\Domain\User   $user 
      * @return mixed
      */
-    public function authenticate(User $user) {
-        $this->validate($this->request, [
+    public function authenticate(Request $request) {
+        $this->validate($request, [
             'email'     => 'required|email',
             'password'  => 'required'
         ]);
         // Find the user by email
-        $user = User::where('email', $this->request->input('email'))->first();
+        $user = User::where('email', $request->input('email'))->first();
         if (!$user) {
             // You wil probably have some sort of helpers or whatever
             // to make sure that you have the same response format for
@@ -65,7 +50,7 @@ class AuthController extends BaseController
             ], 400);
         }
         // Verify the password and generate the token
-        if (Hash::check($this->request->input('password'), $user->password)) {
+        if (Hash::check($request->input('password'), $user->password)) {
             return response()->json([
                 'token' => $this->jwt($user)
             ], 200);
