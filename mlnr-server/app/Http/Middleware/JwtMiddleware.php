@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Middleware;
 
-use App\User;
+use App\Domain\User;
 use Closure;
 use Exception;
 use Firebase\JWT\ExpiredException;

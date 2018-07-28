@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Validator;
-use App\User;
+use App\Domain\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Firebase\JWT\ExpiredException;
@@ -27,7 +27,7 @@ class AuthController extends BaseController
     /**
      * Create a new token.
      * 
-     * @param  \App\User   $user
+     * @param  \App\Domain\User   $user
      * @return string
      */
     protected function jwt(User $user) {
@@ -45,7 +45,7 @@ class AuthController extends BaseController
     /**
      * Authenticate a user and return the token if the provided credentials are correct.
      * 
-     * @param  \App\User   $user 
+     * @param  \App\Domain\User   $user 
      * @return mixed
      */
     public function authenticate(User $user) {
