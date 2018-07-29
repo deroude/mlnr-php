@@ -59,12 +59,25 @@ class FullModel extends Migration
 
         Schema::create('rsvp', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('secret');
             $table->enum('answer', App\Domain\RSVP::$ANSWERS);
             $table->text('text');
             $table->unsignedInteger('user');
             $table->unsignedInteger('meeting');
             $table->foreign('user')->references('id')->on('user');
             $table->foreign('meeting')->references('id')->on('meeting');
+        });
+
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('queue');
+            $table->longText('payload');
+            $table->tinyInteger('attempts')->unsigned();
+            $table->tinyInteger('reserved')->unsigned();
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
+            $table->index(['queue', 'reserved', 'reserved_at']);
         });
     }
 
@@ -80,5 +93,6 @@ class FullModel extends Migration
         Schema::drop('article');
         Schema::drop('user');
         Schema::drop('lodge');
+        Schema::drop('jobs');
     }
 }

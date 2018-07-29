@@ -16,7 +16,7 @@ class RSVP extends Model
      * @var array
      */
     protected $fillable = [
-        'answer', 'text',
+        'answer', 'text', 'secret'
     ];
 
     /**

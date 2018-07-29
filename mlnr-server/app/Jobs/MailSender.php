@@ -2,16 +2,22 @@
 
 namespace App\Jobs;
 
+use App\Domain\RSVP;
+use App\Mail\RSVPMail;
+use Illuminate\Support\Facades\Mail;
+
 class ExampleJob extends Job
 {
+
+    private $rsvp;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(RSVP $rsvp)
     {
-        //
+        $this->rsvp = $rsvp;
     }
 
     /**
@@ -21,6 +27,6 @@ class ExampleJob extends Job
      */
     public function handle()
     {
-        //
+        Mail::to($this->rsvp->user->email)->send(new RSVPMail($this->rsvp));
     }
 }

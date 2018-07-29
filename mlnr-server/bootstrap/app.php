@@ -27,6 +27,8 @@ $app->withFacades();
 
 $app->withEloquent();
 
+$app->configure('mail');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -59,13 +61,11 @@ $app->singleton(
 |
  */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
+    'admin' =>App\Http\Middleware\AdminOnlyMiddleware::class,
+    'superadmin' =>App\Http\Middleware\SuperAdminOnlyMiddleware::class
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +78,7 @@ $app->singleton(
 |
  */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -98,11 +96,5 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
-
-$app->routeMiddleware([
-    'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
-    'admin' =>App\Http\Middleware\AdminOnlyMiddleware::class,
-    'superadmin' =>App\Http\Middleware\SuperAdminOnlyMiddleware::class
-]);
 
 return $app;
