@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "2796cd73-115f-4c00-9a9d-ec25462649d9",
+		"name": "MLNR_PHP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "00843119-61d0-4c31-8db5-8c3704be6b78",
+			"name": "AUTH_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c65e3b2c-0e70-42fc-87d3-78f0d1d66f20",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData=JSON.parse(responseBody);",
+							"pm.environment.set(\"TOKEN\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"{{USER_EMAIL}}\",\n\t\"password\":\"{{USER_PASS}}\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "27e463f2-6df5-4bd3-acfe-8595e34d43cb",
+			"name": "AUTH_ADMIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c65e3b2c-0e70-42fc-87d3-78f0d1d66f20",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData=JSON.parse(responseBody);",
+							"pm.environment.set(\"TOKEN\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"{{ADMIN_EMAIL}}\",\n\t\"password\":\"{{ADMIN_PASS}}\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "34bea23a-1eb1-4575-b448-e3a4df6b1468",
+			"name": "LIST users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "ffdd17c1-cce4-4df5-affa-e1f6eaeb9203",
+			"name": "WHOAMI",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8000/whoami",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"whoami"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "7ac3160a-3645-4b5b-8954-31900493c6a4",
+			"name": "CHANGE Pass",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"current-password\":\"12345\",\n\t\"password\":\"Abc12345\"\n\t\"confirm-password\":\"Abc12345\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/changePass",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"changePass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "e6d4b670-1698-4d31-8ce5-55af2353f6fb",
+			"name": "GET Public Articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8000/articles/public",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"articles",
+						"public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "1492d39f-4d03-4dcd-8dd9-01a8a2020a11",
+			"name": "GET Lodges",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/lodges",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"lodges"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "0eb99ae4-99a3-413a-a395-4a174fc8ffba",
+			"name": "GET Lodge Articles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8000/articles",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "49910ec8-5566-4afb-a3b2-6219f22c5765",
+			"name": "DELETE Article",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8000/articles/5000",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"articles",
+						"5000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "080c26f2-ccc4-44de-b822-95108fadb9fa",
+			"name": "NEW Article",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"An article\",\n\t\"text\":\"BlaBla\",\n\t\"published\":\"2018-07-12 20:00:00\",\n\t\"access\":\"MASTER\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/articles",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "b1d48f7d-9cd4-498f-875d-dbb145df0055",
+			"name": "UPDATE Article",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"blaBBLA\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/articles/71",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"articles",
+						"71"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a92e4760-fb80-47e5-8324-0cff447fa5f1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "856f8961-9e2f-4386-be31-7a031fd99147",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d0ee0587-70bd-4d33-b6ad-6ce5e5ccc423",
+			"key": "USER_PASS",
+			"value": "12345",
+			"type": "string"
+		},
+		{
+			"id": "8b95a9cc-d79d-4e75-98fa-40f295782e16",
+			"key": "USER_EMAIL",
+			"value": "ljacobi@okon.com",
+			"type": "string"
+		},
+		{
+			"id": "978eeb5c-97ea-4778-ae0c-7380b54c1454",
+			"key": "ADMIN_EMAIL",
+			"value": "bradly23@hotmail.com",
+			"type": "string"
+		},
+		{
+			"id": "adb87845-ecbb-4489-b5fd-5e78c957a647",
+			"key": "ADMIN_PASS",
+			"value": "12345",
+			"type": "string"
+		}
+	]
+}
