@@ -25,5 +25,12 @@ $router->group(
         $router->get('users', ['uses' => 'UserController@findInMyLodge']);
         $router->get('whoami', ['uses' => 'UserController@whoAmI']);
         $router->get('lodges', ['uses' => 'LodgeController@getLodges']);
+        $router->get('articles', ['uses' => 'ArticleController@findInMyLodge']);
+        $router->group(
+            ['middleware' => 'admin'],
+            function () use ($router) {
+                $router->delete('articles/{id}', ['uses' => 'ArticleController@deleteArticle']);
+            }
+        );
     }
 );
