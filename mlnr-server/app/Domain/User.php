@@ -12,7 +12,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable;
 
-    public static $ROLES = ['USER', 'ADMIN'];
+    public static $ROLES = ['USER', 'ADMIN', 'SUPERADMIN'];
     public static $RANKS = ['PROFANE', 'SEEKER', 'APPRENTICE', 'JOURNEYMAN', 'MASTER'];
     public static $ASSIGNMENTS = ['MEMBER', 'SECRETARY', 'ORATOR', 'WORSHIPFUL_MASTER', 'SENIOR_WARDEN', 'JUNIOR_WARDEN', 'DEACON', 'TREASURER', 'TYLER'];
     public static $STATUSES = ['ACTIVE', 'INACTIVE'];

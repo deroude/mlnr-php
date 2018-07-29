@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Article;
+use App\Domain\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class ArticleController extends BaseController
 {
     public function findPublicArticles()
     {
-        return response()->json(Article::where('access', 'PROFANE')->get());
-    }
-
-    public function deleteArticle($id)
-    {
-        if(!User::destroy($id)){
-            abort(Response::HTTP_NOT_FOUND);
-        }
-        return response()->json(['status' => 'OK']);
+        return response()->json(Article::where('access', 'PROFANE')->paginate(20));
     }
 
     public function findInMyLodge(Request $request)
@@ -28,6 +23,39 @@ class ArticleController extends BaseController
                 ->whereIn('access', ArticleController::getAccessLevels($request->auth->rank))
                 ->select('article.*')
                 ->paginate(20));
+    }
+
+    public function create(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'text' => 'required',
+            'published' => 'required',
+            'access' => Rule::in(User::$RANKS),
+        ]);
+        $resource = new Article($request->json()->all());
+        $resource->author=$request->auth->id;
+        $resource->save();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $resource = Article::findOrFail($id);
+
+        $resource->fill($request->json()->all());
+        $resource->save();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function delete($id)
+    {
+        if (!Article::destroy($id)) {
+            abort(Response::HTTP_NOT_FOUND,'Item was not found');
+        }
+        return response()->json(['status' => 'OK']);
     }
 
     protected static function getAccessLevels($rank)

@@ -3,9 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -15,9 +20,9 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        Illuminate\Auth\Access\AuthorizationException::class,
-        Symfony\Component\HttpKernel\Exception\HttpException::class,
-        Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        AuthorizationException::class,
+        HttpException::class,
+        ModelNotFoundException::class,
         ValidationException::class,
     ];
 
@@ -45,31 +50,28 @@ class Handler extends ExceptionHandler
     {
         $success = false;
         $response = null;
-        if (method_exists($e,'getStatusCode')) {
+        if (method_exists($e, 'getStatusCode')) {
             $status = $e->getStatusCode();
         } else {
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
         if ($e instanceof HttpResponseException) {
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
-            $response = $e->getResponse();
-        } elseif ($e instanceof Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+        } elseif ($e instanceof MethodNotAllowedHttpException) {
             $status = Response::HTTP_METHOD_NOT_ALLOWED;
-        } elseif ($e instanceof Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-            || $e instanceof Illuminate\Database\Eloquent\ModelNotFoundException) {
+        } elseif ($e instanceof NotFoundHttpException
+            || $e instanceof ModelNotFoundException) {
             $status = Response::HTTP_NOT_FOUND;
-        } elseif ($e instanceof Symfony\Component\HttpKernel\Exception\AuthorizationException
-            || $e instanceof Illuminate\Auth\Access\AuthorizationException) {
+        } elseif ($e instanceof AuthorizationException) {
             $status = Response::HTTP_FORBIDDEN;
-        } elseif ($e instanceof \Dotenv\Exception\ValidationException && $e->getResponse()) {
+        } elseif ($e instanceof ValidationException) {
             $status = Response::HTTP_BAD_REQUEST;
-            $e = new \Dotenv\Exception\ValidationException('HTTP_BAD_REQUEST', $status, $e);
-            $response = $e->getResponse();
         }
         return response()->json([
             'success' => $success,
             'status' => $status,
             'message' => $e->getMessage(),
+            // 'type' => get_class($e),
         ], $status);
     }
 }

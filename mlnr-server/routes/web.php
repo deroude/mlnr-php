@@ -22,14 +22,26 @@ $router->post('auth/login', ['uses' => 'AuthController@authenticate']);
 $router->group(
     ['middleware' => 'jwt.auth'],
     function () use ($router) {
-        $router->get('users', ['uses' => 'UserController@findInMyLodge']);
         $router->get('whoami', ['uses' => 'UserController@whoAmI']);
-        $router->get('lodges', ['uses' => 'LodgeController@getLodges']);
+        $router->put('changePass', ['uses' => 'UserController@changePass']);
         $router->get('articles', ['uses' => 'ArticleController@findInMyLodge']);
         $router->group(
             ['middleware' => 'admin'],
             function () use ($router) {
-                $router->delete('articles/{id}', ['uses' => 'ArticleController@deleteArticle']);
+                $router->get('users', ['uses' => 'UserController@findInMyLodge']);
+                $router->delete('users/{id}', ['uses' => 'UserController@delete']);
+                $router->post('users', ['uses' => 'UserController@create']);
+                $router->put('users/{id}', ['uses' => 'UserController@update']);
+
+                $router->delete('articles/{id}', ['uses' => 'ArticleController@delete']);
+                $router->post('articles', ['uses' => 'ArticleController@create']);
+                $router->put('articles/{id}', ['uses' => 'ArticleController@update']);
+            }
+        );
+        $router->group(
+            ['middleware' => 'superadmin'],
+            function () use ($router) {
+                $router->get('lodges', ['uses' => 'LodgeController@getLodges']);
             }
         );
     }

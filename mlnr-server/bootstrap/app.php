@@ -101,7 +101,8 @@ $app->router->group([
 
 $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
-    'admin' =>App\Http\Middleware\AdminOnlyMiddleware::class
+    'admin' =>App\Http\Middleware\AdminOnlyMiddleware::class,
+    'superadmin' =>App\Http\Middleware\SuperAdminOnlyMiddleware::class
 ]);
 
 return $app;
