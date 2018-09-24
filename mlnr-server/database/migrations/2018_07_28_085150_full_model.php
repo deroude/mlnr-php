@@ -52,6 +52,7 @@ class FullModel extends Migration
             $table->increments('id');
             $table->string('location');
             $table->text('text');
+            $table->unsignedInteger('lodge');
             $table->enum('type', App\Domain\Meeting::$TYPES);
             $table->timestamp('date');
             $table->timestamps();

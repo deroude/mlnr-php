@@ -31,4 +31,9 @@ class Meeting extends Model
     {
         return $this->hasMany("App\Domain\RSVP");
     }
+
+    public function lodge()
+    {
+        return $this->belongsTo("App\Domain\Lodge");
+    }
 }

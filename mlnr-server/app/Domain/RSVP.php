@@ -8,6 +8,8 @@ class RSVP extends Model
 {
 
     protected $table='rsvp';
+
+    public $timestamps = false;
     
     public static $ANSWERS = ['YES', 'NO', 'MAYBE'];
     /**

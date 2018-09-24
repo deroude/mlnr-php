@@ -19,12 +19,21 @@ $router->get('articles/public', ['uses' => 'ArticleController@findPublicArticles
 
 $router->post('auth/login', ['uses' => 'AuthController@authenticate']);
 
+$router->get('rsvp/{secret}', ['uses' => 'RSVPController@findMyInvitation']);
+
 $router->group(
     ['middleware' => 'jwt.auth'],
     function () use ($router) {
         $router->get('whoami', ['uses' => 'UserController@whoAmI']);
         $router->put('changePass', ['uses' => 'UserController@changePass']);
         $router->get('articles', ['uses' => 'ArticleController@findInMyLodge']);
+        $router->patch('rsvp/{id}',['uses' => 'RSVPController@respond']);
+        $router->post('rsvp',['uses' => 'RSVPController@create']);
+        $router->get('meeting/{id}/rsvp',['uses' => 'RSVPController@findByMeeting']);
+        $router->get('meeting',['uses' => 'MeetingController@findInMyLodge']);
+        $router->post('meeting',['uses' => 'MeetingController@create']);
+        $router->put('meeting/{id}',['uses' => 'MeetingController@update']);
+        $router->delete('meeting/{id}',['uses' => 'MeetingController@delete']);
         $router->group(
             ['middleware' => 'admin'],
             function () use ($router) {

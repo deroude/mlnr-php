@@ -6,7 +6,7 @@ use App\Domain\RSVP;
 use App\Mail\RSVPMail;
 use Illuminate\Support\Facades\Mail;
 
-class ExampleJob extends Job
+class MailSender extends Job
 {
 
     private $rsvp;
