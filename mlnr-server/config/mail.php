@@ -24,7 +24,7 @@ return [
     | the Mailgun mail service which will provide reliable deliveries.
     |
     */
-    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+    'host' => env('MAIL_HOST'),
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Port
@@ -35,7 +35,7 @@ return [
     | stay compatible with the Mailgun e-mail application by default.
     |
     */
-    'port' => env('MAIL_PORT', 465),
+    'port' => env('MAIL_PORT'),
     /*
     |--------------------------------------------------------------------------
     | Global "From" Address
@@ -47,8 +47,8 @@ return [
     |
     */
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'rltf77@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Toleranta si Fraternitate'),
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('MAIL_FROM_NAME'),
     ],
     /*
     |--------------------------------------------------------------------------
@@ -71,8 +71,8 @@ return [
     | connection. You may also set the "password" value below this one.
     |
     */
-    'username' => env('MAIL_USERNAME','rltf77@gmail.com'),
-    'password' => env('MAIL_PASSWORD','darius1601'),
+    'username' => env('MAIL_USERNAME'),
+    'password' => env('MAIL_PASSWORD'),
     /*
     |--------------------------------------------------------------------------
     | Sendmail System Path
@@ -97,7 +97,7 @@ return [
     'markdown' => [
         'theme' => 'default',
         'paths' => [
-            resource_path('views/email'),
+            resource_path('views'),
         ],
     ],
 ];

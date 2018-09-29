@@ -3,16 +3,21 @@
 namespace App\Mail;
 
 use Illuminate\Mail\Mailable;
-use App\Domain\RSVP;
 
 class RSVPMail extends Mailable
 {
 
-    public $rsvp;
+    public $text;
+    public $secret;
+    public $name;
+    public $date;
 
-    public function __construct(RSVP $rsvp)
+    public function __construct($name, $text, $secret, $date)
     {
-        $this->rsvp = $rsvp;
+        $this->text = $text;
+        $this->secret = $secret;
+        $this->name = $name;
+        $this->date = $date;
     }
     /**
      * Build the message.
@@ -21,6 +26,9 @@ class RSVPMail extends Mailable
      */
     public function build()
     {
-        return $this->view('rsvp.mail');
+        return $this
+            ->from(['address' => 'rltf77@gmail.com', 'name' => 'Toleranta si Fraternitate'])
+            ->subject('Invitatie')
+            ->markdown('rsvp_mail');
     }
 }

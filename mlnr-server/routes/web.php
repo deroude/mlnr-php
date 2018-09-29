@@ -34,6 +34,7 @@ $router->group(
         $router->post('meeting',['uses' => 'MeetingController@create']);
         $router->put('meeting/{id}',['uses' => 'MeetingController@update']);
         $router->delete('meeting/{id}',['uses' => 'MeetingController@delete']);
+        $router->post('link',['uses'=>'LinkController@sendMail']);
         $router->group(
             ['middleware' => 'admin'],
             function () use ($router) {

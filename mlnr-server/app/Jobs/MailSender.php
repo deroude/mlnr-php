@@ -2,22 +2,29 @@
 
 namespace App\Jobs;
 
-use App\Domain\RSVP;
 use App\Mail\RSVPMail;
 use Illuminate\Support\Facades\Mail;
 
 class MailSender extends Job
 {
 
-    private $rsvp;
+    private $email;
+    private $text;
+    private $secret;
+    private $name;
+    private $date;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(RSVP $rsvp)
+    public function __construct($email, $name, $text, $secret, $date)
     {
-        $this->rsvp = $rsvp;
+        $this->email = $email;
+        $this->text = $text;
+        $this->$secret = $secret;
+        $this->name = $name;
+        $this->date = $date;
     }
 
     /**
@@ -27,6 +34,6 @@ class MailSender extends Job
      */
     public function handle()
     {
-        Mail::to($this->rsvp->user->email)->send(new RSVPMail($this->rsvp));
+        Mail::to($this->email)->send(new RSVPMail($this->name, $this->text, $this->secret, $this->date));
     }
 }
